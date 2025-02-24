@@ -1,5 +1,5 @@
-#import "@preview/ctheorems:1.1.2": *
-#import "@preview/showybox:2.0.1": showybox
+#import "@preview/ctheorems:1.1.3": *
+#import "@preview/showybox:2.0.4": showybox
 
 #let colors = (
   rgb("#9E9E9E"),
@@ -28,9 +28,9 @@
   subtitle: "",
   author: "",
   abstract: none,
+  accent: colors.at(6),
   body,
 ) = {
-
   set document(title: title)
 
   show: thmrules
@@ -38,12 +38,12 @@
   set page(
     numbering: "1",
     number-align: center,
-    header: locate(loc => {
-      if loc.page() == 1 {
+    header: context {
+      if here().page() == 1 {
         return
       }
       box(stroke: (bottom: 0.7pt), inset: 0.2em)[#text(font: "New Computer Modern Sans")[#author #h(1fr)#title]]
-    }),
+    },
   )
 
   set heading(numbering: "1.")
@@ -52,12 +52,11 @@
     set par(first-line-indent: 0em)
 
     if it.numbering != none {
-      text(rgb("#2196F3"), weight: 500)[#sym.section]
+      text(accent, weight: 500)[#sym.section]
 
-      text(rgb("#2196F3"))[#counter(heading).display() ]
+      text(accent)[#counter(heading).display() ]
     }
     it.body
-    v(0.6em)
   }
 
   set text(font: "New Computer Modern", lang: "en")
@@ -78,18 +77,16 @@
 
   if abstract != none [#align(center)[#abstract]]
 
-  set outline(fill: repeat[~.], indent: 1em)
+  set outline(indent: 1em)
 
   show outline: set heading(numbering: none)
   show outline: set par(first-line-indent: 0em)
 
   show outline.entry.where(level: 1): it => {
-
-    text(font: "New Computer Modern Sans", rgb("#2196F3"))[#strong[#it]]
+    text(font: "New Computer Modern Sans", accent)[#strong[#it]]
   }
   show outline.entry: it => {
-    h(1em)
-    text(font: "New Computer Modern Sans", rgb("#2196F3"))[#it]
+    text(font: "New Computer Modern Sans", accent)[#it]
   }
 
 
@@ -103,10 +100,10 @@
 }
 
 #let thmtitle(t, color: rgb("#000000")) = {
-  return text(font: "New Computer Modern Sans", weight: "semibold", fill: color)[#t]
+  text(font: "New Computer Modern Sans", weight: "semibold", fill: color)[#t]
 }
 #let thmname(t, color: rgb("#000000")) = {
-  return text(font: "New Computer Modern Sans", fill: color)[(#t)]
+  text(font: "New Computer Modern Sans", fill: color)[(#t)]
 }
 
 #let thmtext(t, color: rgb("#000000")) = {
@@ -116,7 +113,7 @@
   }
   t = a.join()
 
-  return text(font: "New Computer Modern", fill: color)[#t]
+  text(font: "New Computer Modern", fill: color)[#t]
 }
 
 #let thmbase(
@@ -124,7 +121,7 @@
   head,
   ..blockargs,
   supplement: auto,
-  padding: (top: 0.5em, bottom: 0.5em),
+  padding: (top: 0em, bottom: 0em),
   namefmt: x => [(#x)],
   titlefmt: strong,
   bodyfmt: x => x,
@@ -210,6 +207,7 @@
 #let theorem-style = builder-thmbox(color: colors.at(6), shadow: (offset: (x: 3pt, y: 3pt), color: luma(70%)))
 
 #let theorem = theorem-style("theorem", "Theorem")
+
 #let lemma = theorem-style("lemma", "Lemma")
 #let corollary = theorem-style("corollary", "Corollary")
 

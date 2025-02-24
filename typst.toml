@@ -1,6 +1,6 @@
 [package]
 name = "dvdtyp"
-version = "1.0.0"
+version = "1.0.1"
 entrypoint = "dvd.typ"
 authors = ["DVDTSB"]
 license = "MIT-0"
